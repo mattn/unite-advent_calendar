@@ -111,12 +111,11 @@ function! s:source.gather_candidates(args, context)
       \ 'abbr': item.title,
       \ 'kind': 'source',
       \ 'action__source_name': 'advent_calendar',
-      \ 'action__source_args': [n]
+      \ 'action__source_args': [item.title, n]
       \})
     endfor
   else
-    let info = s:default_set[a:args[0]]
-	echo info
+    let info = s:default_set[a:args[1]]
     let dom = xml#parseURL(info.url)
     for item in dom.childNode('channel').childNodes('item')
       let node = html#parse('<div>' . item.childNode('description').value() . '</div>')
