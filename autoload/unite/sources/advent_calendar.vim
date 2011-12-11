@@ -119,23 +119,40 @@ function! s:source.gather_candidates(args, context)
     let dom = xml#parseURL(info.url)
     for item in dom.childNode('channel').childNodes('item')
       let node = html#parse('<div>' . item.childNode('description').value() . '</div>')
-      let desc = matchstr(substitute(node.value(), '\n', '', 'g'), '^\s*\zs.\+\ze\s*$')
+      let desc = node.value()
       if desc !~ '日目'
         continue
       endif
       let link = node.find('a')
       if empty(link)
-        continue
-      endif
-      let uri = link.attr['href']
-      let day = matchstr(desc, '\(\d\+\)\s*日目')
-      let desc = link.value()
-      call add(items, {
-      \ 'word':   printf('【%d日目】%s', day, desc),
-      \ 'kind':   'uri',
-      \ 'source': 'advent_calendar',
-      \ 'action__path': uri
-      \})
+        for line in split(desc, "\n")
+          let uri = matchstr(line, 'http://[-!#$%&*+,./0-9:;=?@A-Za-z_~]\+')
+          if len(uri) == 0
+            continue
+          endif
+          let day = matchstr(line, '\(\d\+\)\s*日目')
+		  if len(day) == 0
+            let day = matchstr(desc, '\(\d\+\)\s*日目')
+          endif
+          let desc = uri
+          call add(items, {
+          \ 'word':   printf('【%d日目】%s', day, desc),
+          \ 'kind':   'uri',
+          \ 'source': 'advent_calendar',
+          \ 'action__path': uri
+          \})
+        endfor
+      else
+        let uri = link.attr['href']
+        let day = matchstr(desc, '\(\d\+\)\s*日目')
+        let desc = link.value()
+        call add(items, {
+        \ 'word':   printf('【%d日目】%s', day, desc),
+        \ 'kind':   'uri',
+        \ 'source': 'advent_calendar',
+        \ 'action__path': uri
+        \})
+	  endif
       unlet item
     endfor
   endif
