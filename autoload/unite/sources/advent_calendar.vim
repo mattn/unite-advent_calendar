@@ -6,6 +6,7 @@ function! unite#sources#advent_calendar#define()
 endfunction
 
 let s:default_set = [
+\  { 'url': 'http://partake.in/feed/event/19fd41ff-cca8-4a40-bc33-1ce70e45bae6', 'title': 'Scala Advent Calendar 2011' },
 \  { 'url': 'http://atnd.org/comments/21936.rss', 'title': 'C++11 Advent Calendar 2011' },
 \  { 'url': 'http://atnd.org/comments/20321.rss', 'title': 'bjam Advent Calendar jp 2011' },
 \  { 'url': 'http://atnd.org/comments/23108.rss', 'title': 'Visual Basic Advent Calendar 2011' },
