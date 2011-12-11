@@ -147,7 +147,7 @@ function! s:source.gather_candidates(args, context)
       endfor
     elseif info.url =~ 'atnd'
       let url = substitute(info.url, '/events/', '/comments/', '') . '.rss'
-      let dom = xml#parseURL(info.url)
+      let dom = xml#parseURL(url)
       for item in dom.childNode('channel').childNodes('item')
         let node = html#parse('<div>' . item.childNode('description').value() . '</div>')
         let desc = node.value()
