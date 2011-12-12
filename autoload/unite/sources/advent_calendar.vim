@@ -26,6 +26,7 @@ let s:default_set = [
 \  { 'type': 'rss', 'url': 'http://perl-users.jp/articles/advent-calendar/2011/english/rss', 'title': 'Perl Advent Calendar Japan 2011 - English Track' },
 \  { 'type': 'rss', 'url': 'http://perl-users.jp/articles/advent-calendar/2011/anysan/rss', 'title': 'Perl Advent Calendar Japan 2011 - AnySan Track' },
 \  { 'type': 'rss', 'url': 'http://perl-users.jp/articles/advent-calendar/2011/dbix/rss', 'title': 'Perl Advent Calendar Japan 2011 - DBIx Track' },
+\  { 'type': 'rss', 'url': 'http://perl-users.jp/articles/advent-calendar/2011/amon2/rss', 'title': 'Perl Advent Calendar Japan 2011 - Amon2 Track' },
 \  { 'type': 'atnd', 'url': 'http://atnd.org/events/22820', 'title': 'Perl6 Advent Calendar 2011' },
 \  { 'type': 'atnd', 'url': 'http://atnd.org/events/22781', 'title': 'PHP Advent Calendar jp 2011' },
 \  { 'type': 'atnd', 'url': 'http://atnd.org/events/22473', 'title': 'PHP5.4 Advent Calendar 2011' },
