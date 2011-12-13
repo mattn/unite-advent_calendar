@@ -109,6 +109,13 @@ let s:source = {
 \ 'default_action': {'uri': 'open'}
 \}
 
+function s:scannr(s)
+  let dmx = '0123456789０１２３４５６７８９〇一二三四五六七八九'
+  let dma = split(dmx, '\zs')
+  let day = matchstr(a:s, '\zs\(['.dmx.']\+\)\ze\s*日目')
+  return join(map(split(day, '\zs'), 'index(dma, v:val) % 10'), '')
+endfunction
+
 function! s:source.gather_candidates(args, context)
   let items = []
   if len(a:args) == 0
@@ -176,13 +183,16 @@ function! s:source.gather_candidates(args, context)
               if len(uri) == 0
                 continue
               endif
-              let day = matchstr(line, '\(\d\+\)\s*日目')
+              let day = s:scannr(line)
               if len(day) == 0
-                let day = matchstr(desc, '\(\d\+\)\s*日目')
+                let day = s:scannr(desc)
+                if len(day) == 0
+                  let day = "?"
+                endif
               endif
               let desc = uri
               call add(items, {
-              \ 'word':   printf('【%d日目】%s', day, desc),
+              \ 'word':   printf('【%s日目】%s', day, desc),
               \ 'kind':   'uri',
               \ 'source': 'advent_calendar',
               \ 'action__path': uri
@@ -190,10 +200,13 @@ function! s:source.gather_candidates(args, context)
             endfor
           else
             let uri = link.attr['href']
-            let day = matchstr(desc, '\(\d\+\)\s*日目')
+            let day = s:scannr(desc)
+            if len(day) == 0
+              let day = "?"
+            endif
             let desc = link.value()
             call add(items, {
-            \ 'word':   printf('【%d日目】%s', day, desc),
+            \ 'word':   printf('【%s日目】%s', day, desc),
             \ 'kind':   'uri',
             \ 'source': 'advent_calendar',
             \ 'action__path': uri
