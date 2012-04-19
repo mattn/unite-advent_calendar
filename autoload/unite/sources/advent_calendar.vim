@@ -132,7 +132,7 @@ function! s:source.gather_candidates(args, context)
   else
     let info = s:default_set[a:args[1]]
 	if info.type == 'rss'
-      let dom = xml#parseURL(info.url)
+      let dom = webapi#xml#parseURL(info.url)
       for item in reverse(dom.childNode('channel').childNodes('item'))
         let title = item.childNode('title').value()
         let uri = item.childNode('link').value()
@@ -144,11 +144,11 @@ function! s:source.gather_candidates(args, context)
         \})
       endfor
 	else
-      let res = http#get(info.url)
+      let res = webapi#http#get(info.url)
       let content = substitute(matchstr(res.content, '\zs<table[^>]*>.*</table>\ze'), '\n', '', 'g')
       if len(content)
         let content = iconv(content, "utf-8", &encoding)
-        let table = html#parse(content)
+        let table = webapi#html#parse(content)
         for row in table.findAll('tr')
           let cols = row.findAll('td')
           if len(cols) == 0
@@ -169,9 +169,9 @@ function! s:source.gather_candidates(args, context)
         endfor
       elseif info.type == 'atnd'
         let url = substitute(info.url, '/events/', '/comments/', '') . '.rss'
-        let dom = xml#parseURL(url)
+        let dom = webapi#xml#parseURL(url)
         for item in dom.childNode('channel').childNodes('item')
-          let node = html#parse('<div>' . item.childNode('description').value() . '</div>')
+          let node = webapi#html#parse('<div>' . item.childNode('description').value() . '</div>')
           let desc = node.value()
           if desc !~ '日目'
             continue
